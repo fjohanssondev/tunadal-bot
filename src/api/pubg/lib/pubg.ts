@@ -1,6 +1,7 @@
 import "dotenv/config"
-import { BASE_URL } from "@/pubg/index";
 import { GameMode, Player, PlayerNames, PlayerSeasonResponse, Season } from "@/pubg/types";
+
+const BASE_URL = "https://api.pubg.com/shards/steam"
 
 export const PLAYERS = [
   {

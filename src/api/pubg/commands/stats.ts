@@ -27,10 +27,10 @@ export const command = new SlashCommandBuilder()
       .setRequired(true)
       .addChoices(
         { name: "Squad FPP", value: "squad-fpp" },
-        { name: "Squad", value: "squad" },
         { name: "Duo FPP", value: "duo-fpp" },
-        { name: "Duo", value: "duo" },
         { name: "Solo FPP", value: "solo-fpp" },
+        { name: "Squad", value: "squad" },
+        { name: "Duo", value: "duo" },
         { name: "Solo", value: "solo" },
       )
   )
