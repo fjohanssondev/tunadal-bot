@@ -84,7 +84,7 @@ export interface Season {
 type PlayerAttributes = {
   banType: string,
   clanId: string,
-  name: Players
+  name: PlayerNames
   stats: null,
   titleId: string,
   shardId: Platform,
@@ -109,5 +109,5 @@ type Match = {
   type: string
   id: string
 }
-export type Players = "Kerkaa" | "Drag0nslayer1337"
+export type PlayerNames = "Kerkaa" | "Drag0nslayer1337" | "TMB1" | "xerius96"
 type Platform = "steam"

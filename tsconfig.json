@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "target": "ES2017",
     "paths": {
       "@/*": ["./src/*"],
       "@/pubg/*": ["./src/api/pubg/*"]

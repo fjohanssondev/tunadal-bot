@@ -1,6 +1,25 @@
 import "dotenv/config"
 import { BASE_URL } from "@/pubg/index";
-import { GameMode, Player, Players, PlayerSeasonResponse, Season } from "@/pubg/types";
+import { GameMode, Player, PlayerNames, PlayerSeasonResponse, Season } from "@/pubg/types";
+
+export const PLAYERS = [
+  {
+    name: "Fredrik",
+    value: "Drag0nslayer1337" as PlayerNames
+  },
+  {
+    name: "Kerkaa",
+    value: "Kerkaa" as PlayerNames
+  },
+  {
+    name: "Aspen",
+    value: "xerius96" as PlayerNames
+  },
+  {
+    name: "Tim",
+    value: "TMB1" as PlayerNames
+  },
+]
 
 interface SeasonResponse {
   data: Season[]
@@ -22,7 +41,7 @@ export async function getData<T>(path: string){
   return data
 }
 
-export async function getPlayerData(name: Players){
+export async function getPlayerData(name: PlayerNames){
   const { data } = await getData<PlayerResponse>(`/players?filter[playerNames]=${name}`)
 
   return data[0]
@@ -34,7 +53,7 @@ export async function getCurrentSeason(){
   return data.find(season => season.attributes.isCurrentSeason)
 }
 
-export async function getPlayerStats(name: Players, mode: GameMode, seasonId?: string) {
+export async function getPlayerStats(name: PlayerNames, mode: GameMode, seasonId?: string) {
   const season = seasonId
     ? { id: seasonId }
     : await getCurrentSeason()
