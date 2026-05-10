@@ -15,7 +15,7 @@ export const aiCommand = new SlashCommandBuilder()
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return
-  if (interaction.commandName !== "claude") return
+  if (interaction.commandName !== "ask") return
 
   await interaction.deferReply()
 
