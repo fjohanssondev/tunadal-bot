@@ -27,8 +27,11 @@ export async function getData<T>(path: string) {
     }
   })
 
-  const data: T = await res.json()
-  return data
+  console.log(`${res.status} ${path}`)
+  const text = await res.text()
+  console.log(text)
+  
+  return JSON.parse(text) as T
 }
 
 export async function getPlayerData(name: PlayerNames) {

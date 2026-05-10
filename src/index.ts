@@ -3,6 +3,7 @@ import { Events } from "discord.js"
 import { client } from "./client"
 import "./api/pubg/commands/stats"
 import "./api/pubg/commands/leaderboard"
+import "./api/claude/commands/claude"
 import { startCron } from "@/lib/cron"
 
 client.once(Events.ClientReady, (client) => {
