@@ -6,7 +6,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tsx src/deploy.ts",
-    "start": "npx tsx src/index.ts"
+    "start": "npx tsx src/index.ts",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
