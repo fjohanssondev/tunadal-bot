@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Player {
+  id        String      @id @default(cuid())
+  name      String      @unique
+  pubgStats PubgStats[]
+}
+
+model Season {
+  id        String   @id
+  isCurrent Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+}
+
+model PubgStats {
+  id            String   @id @default(cuid())
+  player        Player   @relation(fields: [playerId], references: [id])
+  playerId      String
+  seasonId      String
+  mode          String
+  updatedAt     DateTime @updatedAt
+
+  kills         Int
+  losses        Int
+  assists       Int
+  damageDealt   Float
+  headshotKills Int
+  roundsPlayed  Int
+  wins          Int
+  top10s        Int
+  revives       Int
+  teamKills     Int
+  suicides      Int
+  longestKill   Float
+  rideDistance  Float
+  walkDistance  Float
+  weaponsAcquired Int
+
+  @@unique([playerId, seasonId, mode])
+}

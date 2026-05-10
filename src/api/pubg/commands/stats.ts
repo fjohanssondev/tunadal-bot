@@ -3,7 +3,7 @@ import { client } from "@/client";
 import { GameMode, PlayerNames } from "@/pubg/types";
 import { getPlayerStats, PLAYERS } from "@/pubg/lib/pubg";
 
-const gameModeLabels: Record<GameMode, string> = {
+export const gameModeLabels: Record<GameMode, string> = {
   "solo": "Solo",
   "solo-fpp": "Solo FPP",
   "duo": "Duo",
@@ -12,7 +12,7 @@ const gameModeLabels: Record<GameMode, string> = {
   "squad-fpp": "Squad FPP",
 }
 
-export const command = new SlashCommandBuilder()
+export const statsCommand = new SlashCommandBuilder()
   .setName("stats")
   .setDescription("Visa PUBG-stats för en spelare")
   .addStringOption(option =>
@@ -42,6 +42,7 @@ export const command = new SlashCommandBuilder()
 
   client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isChatInputCommand()) return
+    if (interaction.commandName !== "stats") return
   
     await interaction.deferReply()
   

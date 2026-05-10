@@ -2,10 +2,14 @@
   "compilerOptions": {
     "module": "ESNext",
     "moduleResolution": "Bundler",
-    "target": "ES2017",
+    "target": "ES2023",
+    "strict": true,
+    "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@/pubg/*": ["./src/api/pubg/*"]
+      "@/pubg/*": ["./src/api/pubg/*"],
+      "@/db": ["./lib/prisma"],
+      "@/lib/*": ["./lib/*"]
     }
   }
 }

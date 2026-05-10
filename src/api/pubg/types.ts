@@ -1,3 +1,5 @@
+import { getPlayersStats } from "./lib/pubg"
+
 export interface PlayerSeasonResponse {
   data: PlayerSeasonData
   links: {
@@ -80,6 +82,8 @@ export interface Season {
     isOffseason: boolean
   }
 }
+
+export type PlayerResult = Awaited<ReturnType<typeof getPlayersStats>>[number]
 
 type PlayerAttributes = {
   banType: string,

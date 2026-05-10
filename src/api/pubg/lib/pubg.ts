@@ -1,25 +1,14 @@
 import "dotenv/config"
-import { GameMode, Player, PlayerNames, PlayerSeasonResponse, Season } from "@/pubg/types";
+import { GameMode, Player, PlayerNames, Season } from "@/pubg/types";
+import { db } from "@/db";
 
 const BASE_URL = "https://api.pubg.com/shards/steam"
 
 export const PLAYERS = [
-  {
-    name: "Fredrik",
-    value: "Drag0nslayer1337" as PlayerNames
-  },
-  {
-    name: "Kerkaa",
-    value: "Kerkaa" as PlayerNames
-  },
-  {
-    name: "Aspen",
-    value: "xerius96" as PlayerNames
-  },
-  {
-    name: "Tim",
-    value: "TMB1" as PlayerNames
-  },
+  { name: "Fredrik", value: "Drag0nslayer1337" as PlayerNames },
+  { name: "Kerkaa", value: "Kerkaa" as PlayerNames },
+  { name: "Aspen", value: "xerius96" as PlayerNames },
+  { name: "Tim", value: "TMB1" as PlayerNames },
 ]
 
 interface SeasonResponse {
@@ -30,7 +19,7 @@ interface PlayerResponse {
   data: Player[]
 }
 
-export async function getData<T>(path: string){
+export async function getData<T>(path: string) {
   const res = await fetch(`${BASE_URL}${path}`, {
     headers: {
       "Authorization": `Bearer ${process.env.PUBG_API_KEY}`,
@@ -42,28 +31,42 @@ export async function getData<T>(path: string){
   return data
 }
 
-export async function getPlayerData(name: PlayerNames){
+export async function getPlayerData(name: PlayerNames) {
   const { data } = await getData<PlayerResponse>(`/players?filter[playerNames]=${name}`)
-
   return data[0]
 }
 
-export async function getCurrentSeason(){
+export async function getCurrentSeason() {
   const { data } = await getData<SeasonResponse>("/seasons")
-
   return data.find(season => season.attributes.isCurrentSeason)
 }
 
+async function getCurrentSeasonFromDb() {
+  const season = await db.season.findFirst({ where: { isCurrent: true } })
+  if (!season) throw new Error("Ingen current season i databasen, vänta på nästa cronjobb-körning")
+  return season
+}
+
 export async function getPlayerStats(name: PlayerNames, mode: GameMode, seasonId?: string) {
-  const season = seasonId
-    ? { id: seasonId }
-    : await getCurrentSeason()
+  const season = seasonId ? { id: seasonId } : await getCurrentSeasonFromDb()
 
-  const { id: player_id } = await getPlayerData(name)
+  const stats = await db.pubgStats.findFirst({
+    where: { player: { name }, seasonId: season.id, mode },
+    include: { player: true }
+  })
 
-  if (!season) throw new Error("Couldn't find this season")
+  if (!stats) throw new Error(`Ingen data för ${name} i ${mode}`)
 
-  const { data } = await getData<PlayerSeasonResponse>(`/players/${player_id}/seasons/${season.id}`)
-  
-  return data.attributes.gameModeStats[mode]
+  return stats
+}
+
+export async function getPlayersStats(names: PlayerNames[], mode: GameMode, seasonId?: string) {
+  const season = seasonId ? { id: seasonId } : await getCurrentSeasonFromDb()
+
+  const stats = await db.pubgStats.findMany({
+    where: { player: { name: { in: names } }, seasonId: season.id, mode },
+    include: { player: true }
+  })
+
+  return stats.map(s => ({ ...s, name: s.player.name }))
 }
