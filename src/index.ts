@@ -10,4 +10,4 @@ client.once(Events.ClientReady, (client) => {
   startCron()
 })
 
-client.login(process.env.DISCORD_BOT_TOKEN_DEV)
+client.login(process.env.DISCORD_BOT_TOKEN ?? process.env.DISCORD_BOT_TOKEN_DEV)
