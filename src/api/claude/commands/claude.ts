@@ -3,9 +3,13 @@ import { client } from "@/client";
 import Anthropic from "@anthropic-ai/sdk";
 import { db } from "@/db";
 import { readFileSync } from "fs"
-import { join } from "path"
+import { fileURLToPath } from "url"
+import { join, dirname } from "path"
 
-export const tunadaSystemPrompt = readFileSync(
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const tunadaSystemPrompt = readFileSync(
   join(__dirname, "../../../prompts/tunadal.txt"),
   "utf-8"
 )
