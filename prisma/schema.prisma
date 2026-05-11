@@ -13,6 +13,18 @@ model Player {
   pubgStats PubgStats[]
 }
 
+model ConversationMessage {
+  id        String   @id @default(cuid())
+  channelId String
+  userId    String
+  username  String
+  role      String
+  content   String
+  createdAt DateTime @default(now())
+
+  @@index([channelId, createdAt])
+}
+
 model Season {
   id        String   @id
   isCurrent Boolean  @default(false)
